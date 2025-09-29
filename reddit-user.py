@@ -1,11 +1,14 @@
-# Adapted from https://www.geeksforgeeks.org/nlp/text-classification-using-scikit-learn-in-nlp/
-# Further insight from https://sklearner.com/sklearn-svc-kernel-parameter/
-
+# Initially adapted from https://www.geeksforgeeks.org/nlp/text-classification-using-scikit-learn-in-nlp/
+# Kernel testing insight from https://sklearner.com/sklearn-svc-kernel-parameter/
+# gensim/word2vec additions from https://medium.com/@dilip.voleti/classification-using-word2vec-b1d79d375381
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
+
+import gensim
+from gensim.models import Word2Vec
 
 import pandas as pd
 import time
@@ -23,28 +26,35 @@ rows=10000
 
 df=pd.concat([redditCSV.head(n=rows),userCSV.head(n=rows)],ignore_index=True)
 
+# Clean data using the built in cleaner in gensim
+df['text_clean'] = df['text'].apply(lambda x: " ".join(gensim.utils.simple_preprocess(x)))
+
+print(df.head(n=100))
+
 print("Dataset size:", len(df))
+
+print("==BEGIN TF-IDF APPROACH ==")
 
 # Initialize TF-IDF Vectorizer
 vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
 # Transform the text data to feature vectors
-X = vectorizer.fit_transform(df['text'])
+X_unclean = vectorizer.fit_transform(df['text'])
+X_clean = vectorizer.fit_transform(df['text_clean'])
 # Labels
 y = df['label']
 
+X_sets=[X_unclean,X_clean]
 
-# Train with different kernel values
-# , 'poly', 'rbf', 'sigmoid' only rbf had better performance but at double time
-kernels = ['linear']
+for trial, X in enumerate(X_sets):
 
-for kernel in kernels:
-    print (f'Beginning {kernel} attempt')
+    print (f'Beginning attempt {trial}')
     # Split the dataset into training and testing sets
     train_start = time.time()
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
     # Initialize and train the classifier
-    clf = SVC(kernel=kernel)
+    # only rbf had better accuracy but at double time
+    clf = SVC(kernel='linear')
     clf.fit(X_train, y_train)
     train_end=time.time();
 
@@ -62,3 +72,6 @@ for kernel in kernels:
     print(f'\tAccuracy: {accuracy:.4f} \n')
     #print('Classification Report:')
     #print(report)
+
+#print("== BEGIN WORD2VEC APPROACH ==")
+
