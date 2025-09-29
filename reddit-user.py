@@ -18,7 +18,7 @@ redditCSV['label']='reddit'
 userCSV.columns=['text']
 userCSV['label']='user'
 
-rows=1000
+rows=10000
 
 
 df=pd.concat([redditCSV.head(n=rows),userCSV.head(n=rows)],ignore_index=True)
@@ -34,7 +34,8 @@ y = df['label']
 
 
 # Train with different kernel values
-kernels = ['linear', 'poly', 'rbf', 'sigmoid']
+# , 'poly', 'rbf', 'sigmoid' only rbf had better performance but at double time
+kernels = ['linear']
 
 for kernel in kernels:
     print (f'Beginning {kernel} attempt')
