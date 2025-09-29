@@ -2,6 +2,8 @@
 # Kernel testing insight from https://sklearner.com/sklearn-svc-kernel-parameter/
 # gensim additions from https://medium.com/@dilip.voleti/classification-using-word2vec-b1d79d375381
 
+from reddit_user_common import load_dataset
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
@@ -12,19 +14,7 @@ import gensim
 import pandas as pd
 import time
 
-# Load dataset
-redditCSV = pd.read_csv("./datasets/reddit-comments-bodyonly.csv") 
-userCSV = pd.read_csv("./datasets/user-comments-bodyonly.csv") 
-redditCSV.columns=['text']
-redditCSV['label']='reddit'
-userCSV.columns=['text']
-userCSV['label']='user'
-
-rows=1000
-
-
-df=pd.concat([redditCSV.head(n=rows),userCSV.head(n=rows)],ignore_index=True)
-
+df=load_dataset(red_row=10000, user_row=1000)
 # Clean data using the built in cleaner in gensim
 df['text_clean'] = df['text'].apply(lambda x: " ".join(gensim.utils.simple_preprocess(x)))
 
