@@ -1,6 +1,6 @@
 # Initially adapted from https://www.geeksforgeeks.org/nlp/text-classification-using-scikit-learn-in-nlp/
 # Kernel testing insight from https://sklearner.com/sklearn-svc-kernel-parameter/
-# gensim/word2vec additions from https://medium.com/@dilip.voleti/classification-using-word2vec-b1d79d375381
+# gensim additions from https://medium.com/@dilip.voleti/classification-using-word2vec-b1d79d375381
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -8,7 +8,6 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
 
 import gensim
-from gensim.models import Word2Vec
 
 import pandas as pd
 import time
@@ -21,7 +20,7 @@ redditCSV['label']='reddit'
 userCSV.columns=['text']
 userCSV['label']='user'
 
-rows=10000
+rows=1000
 
 
 df=pd.concat([redditCSV.head(n=rows),userCSV.head(n=rows)],ignore_index=True)
@@ -29,11 +28,9 @@ df=pd.concat([redditCSV.head(n=rows),userCSV.head(n=rows)],ignore_index=True)
 # Clean data using the built in cleaner in gensim
 df['text_clean'] = df['text'].apply(lambda x: " ".join(gensim.utils.simple_preprocess(x)))
 
-print(df.head(n=100))
-
 print("Dataset size:", len(df))
 
-print("==BEGIN TF-IDF APPROACH ==")
+
 
 # Initialize TF-IDF Vectorizer
 vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
@@ -72,6 +69,4 @@ for trial, X in enumerate(X_sets):
     print(f'\tAccuracy: {accuracy:.4f} \n')
     #print('Classification Report:')
     #print(report)
-
-#print("== BEGIN WORD2VEC APPROACH ==")
 
