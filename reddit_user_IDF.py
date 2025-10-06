@@ -25,7 +25,6 @@ X = vectorizer.fit_transform(df['text'])
 # Labels
 y = df['label']
 
-print (f'Beginning attempt {trial}')
 # Split the dataset into training and testing sets
 train_start = time.time()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
