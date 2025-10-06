@@ -68,3 +68,5 @@ accuracy = accuracy_score(y_test, y_pred)
 report = classification_report(y_test, y_pred, target_names=['reddit','user'])
 
 print(f'\tAccuracy: {accuracy:.4f} \n')
+print('Classification Report:')
+print(report)
