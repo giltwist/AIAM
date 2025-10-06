@@ -37,7 +37,7 @@ print("\tPrep time: ", prep_end-prep_start)
 # Train the fasttext model
 #train_start = time.time()
 #model = fasttext.train_supervised('reddit_train_ft.txt',wordNgrams=i,epoch=20,lr=0.7)
-model = fasttext.train_supervised('reddit_train_ft.txt',autotuneValidationFile='reddit_test_ft.txt', autotuneMetric="f1:__label__user", autotuneModelSize="1G")
+model = fasttext.train_supervised('reddit_train_ft.txt',autotuneValidationFile='reddit_test_ft.txt', autotuneMetric="f1:__label__user")
 #train_end=time.time();
 #print("\tTraining time: ", train_end-train_start)
 
