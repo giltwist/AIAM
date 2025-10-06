@@ -35,15 +35,17 @@ prep_end=time.time()
 print("\tPrep time: ", prep_end-prep_start)
 
 
-# Train the fasttext model
-train_start = time.time()
-#2-grams proved optimal in my testing
-model = fasttext.train_supervised('reddit_train_ft.txt',wordNgrams=2)
-train_end=time.time();
-print("\tTraining time: ", train_end-train_start)
 
-# Use the trained model to make predictions on the test data
-pprint.pp(model.test_label('reddit_test_ft.txt'))
+for i in range(1,10):
+    print (f'{i*5} epochs')
+    # Train the fasttext model
+    train_start = time.time()
+    model = fasttext.train_supervised('reddit_train_ft.txt',wordNgrams=2,epoch=i*5)
+    train_end=time.time();
+    print("\tTraining time: ", train_end-train_start)
+
+    # Use the trained model to make predictions on the test data
+    pprint.pp(model.test_label('reddit_test_ft.txt'))
 
 #print(dict(list(y_pred.items())[0:5]))
 
