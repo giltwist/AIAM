@@ -14,7 +14,7 @@ import gensim
 import pandas as pd
 import time
 
-df=load_dataset(red_row=20000, user_row=2000)
+df=load_dataset(red_row=20000, user_row=20000)
 
 print("Dataset size:", len(df))
 
