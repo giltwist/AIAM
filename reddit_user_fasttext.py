@@ -18,7 +18,7 @@ from reddit_user_common import load_dataset
 df=load_dataset(red_row=20000, user_row=20000)
 
 print("Dataset size:", len(df))
-prep_stat=time.time()
+prep_start=time.time()
 
 df['text'] = df['text'].apply(word_tokenize)
 df['text'] = df['text'].apply(lambda x: [word.lower() for word in x if word.isalpha() and word.lower() not in stopwords.words('english')])
