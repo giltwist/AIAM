@@ -19,7 +19,7 @@ df=load_dataset(red_row=20000, user_row=20000)
 print("Dataset size:", len(df))
 
 # Initialize TF-IDF Vectorizer
-vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
+vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7, ngram_range=(1,3))
 # Transform the text data to feature vectors
 X = vectorizer.fit_transform(df['text'])
 # Labels
