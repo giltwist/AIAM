@@ -51,9 +51,16 @@ def tk_init(self, function):
     self.window.mainloop()
     
 
-def show_result(self, is_Me):
+def show_result(self, is_Me, conf_array=None):
     if is_Me:
-        messagebox.showinfo("Result","This was written by me")
+        if conf_array is None:
+            messagebox.showinfo("Result","This was written by me")
+        else:
+            if conf_array[1]>.8:
+                messagebox.showinfo("Strong Result",f"This was very likely written by me ({conf_array[1]:.2%})")
+            else:
+                messagebox.showwarning("Weak Result",f"This was maybe written by me ({conf_array[1]:.2%})")
+                
     else:
         messagebox.showerror("Result","This was not written by me")
  

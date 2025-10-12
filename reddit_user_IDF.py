@@ -64,9 +64,8 @@ class RU_IDF:
     def predict(self):
         X = self.vectorizer.transform([self.text_entry.get("1.0", tk.END)])
         prediction = self.model.predict(X)
-        proba = self.model.predict_proba(X)
-        print(proba)
-        show_result(self,prediction[0]=='user')
+        confidence = self.model.predict_proba(X)[0]
+        show_result(self,prediction[0]=='user',confidence)
 
 
 if __name__ == "__main__":
