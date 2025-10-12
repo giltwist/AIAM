@@ -37,7 +37,7 @@ class RU_IDF:
 
         # Initialize and train the classifier
         # only rbf had better accuracy but at double time
-        idf = SVC(kernel='linear')
+        idf = SVC(kernel='linear',probability=True)
         idf.fit(X_train, y_train)
         train_end=time.time();
 
@@ -64,6 +64,8 @@ class RU_IDF:
     def predict(self):
         X = self.vectorizer.transform([self.text_entry.get("1.0", tk.END)])
         prediction = self.model.predict(X)
+        proba = self.model.predict_proba(X)
+        print(proba)
         show_result(self,prediction[0]=='user')
 
 
