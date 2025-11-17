@@ -28,7 +28,7 @@ if __name__ == "__main__":
     user_median=compute_geometric_median(user_matrix)
     print(user_median.median)
 
-    print("=====USER=====")
+    #print("=====USER=====")
 
     user_distances = []
     for i in range(user_matrix.shape[0]):
@@ -37,34 +37,37 @@ if __name__ == "__main__":
 
     user_df['distance']=user_distances
 
-    user_df['bin']=pd.qcut(user_df['distance'], q=5, labels = range(5))
+    user_df['bin']=pd.qcut(user_df['distance'], q=10, labels = range(10))
  
     user_sample = user_df.groupby('bin', group_keys=False).apply(lambda x: x.sample(100))
 
-    sorted_user = user_sample.sort_values('distance')
+    #sorted_user = user_sample.sort_values('distance')
 
-    pd.options.display.max_colwidth = 500
+    #pd.options.display.max_colwidth = 500
 
-    print(sorted_user.shape)
-    print(sorted_user.head())
-    print("-----")
-    print(sorted_user.tail())
+    #print(sorted_user.shape)
+    #print(sorted_user.head())
+    #print("-----")
+    #print(sorted_user.tail())
 
 
-
-    # print("=====REDDIT=====")
+    #print("=====REDDIT=====")
     
-    # reddit_matrix= vectorizer.transform(reddit_df['text'])
-    # reddit_matrix = np.array(reddit_matrix.todense())
+    reddit_matrix= vectorizer.transform(reddit_df['text'])
+    reddit_matrix = np.array(reddit_matrix.todense())
 
-    # reddit_median=compute_geometric_median(reddit_matrix)
+    reddit_median=compute_geometric_median(reddit_matrix)
 
-    # reddit_distances = []
-    # for i in range(reddit_matrix.shape[0]):
-    #     dist = np.linalg.norm(reddit_matrix[i]-reddit_median.median)
-    #     reddit_distances.append(dist)
+    reddit_distances = []
+    for i in range(reddit_matrix.shape[0]):
+        dist = np.linalg.norm(reddit_matrix[i]-reddit_median.median)
+        reddit_distances.append(dist)
 
-    # reddit_df['distance']=reddit_distances
+    reddit_df['distance']=reddit_distances
+
+    reddit_df['bin']=pd.qcut(reddit_df['distance'], q=10, labels = range(10))
+
+    reddit_sample = reddit_df.groupby('bin', group_keys=False).apply(lambda x: x.sample(100))
 
     # sorted_reddit = reddit_df.sort_values('distance')
 
@@ -73,6 +76,9 @@ if __name__ == "__main__":
     # print(sorted_reddit.iloc[:5, df.columns.get_loc('text')])
     # print("-----")
     # print(sorted_reddit.iloc[-5:, df.columns.get_loc('text')])
+
+    sampled_df = pd.concat([reddit_sample,user_sample],ignore_index=True)
+    sampled_df.to_csv("./datasets/pruned.csv")
 
 
 
