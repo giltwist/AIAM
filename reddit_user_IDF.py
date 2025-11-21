@@ -20,13 +20,13 @@ import tkinter as tk
 class RU_IDF:
 
     def train_idf(self, verbose):
-        #df=load_dataset(red_row=1000, user_row=1000)
-        df=pd.read_csv("./datasets/pruned.csv")
+        df=load_dataset(red_row=20000, user_row=20000)
+        #df=pd.read_csv("./datasets/pruned.csv")
 
         print("Dataset size:", len(df))
 
         # Initialize TF-IDF Vectorizer
-        vectorizer = TfidfVectorizer(stop_words='english', min_df=0.001, max_df=0.7, ngram_range=(1,3))
+        vectorizer = TfidfVectorizer(stop_words='english', min_df=0.0001, max_df=0.7, ngram_range=(1,3))
         # Transform the text data to feature vectors
         X = vectorizer.fit_transform(df['text'])
         # Labels
@@ -58,8 +58,8 @@ class RU_IDF:
             print('Classification Report:')
             print(report)
 
-        joblib.dump(idf,'./datasets/tfidf-model-decile.pkl')
-        joblib.dump(vectorizer,'./datasets/tfidf-vectorizer-decile.pkl')
+        joblib.dump(idf,'./datasets/tfidf-model.pkl')
+        joblib.dump(vectorizer,'./datasets/tfidf-vectorizer.pkl')
         return idf, vectorizer
     
     def predict(self):
@@ -72,8 +72,8 @@ class RU_IDF:
 if __name__ == "__main__":
     ru = RU_IDF()
     try:
-        ru.model=joblib.load('./datasets/tfidf-model-decile.pkl')
-        ru.vectorizer=joblib.load('./datasets/tfidf-vectorizer-decile.pkl')
+        ru.model=joblib.load('./datasets/tfidf-model.pkl')
+        ru.vectorizer=joblib.load('./datasets/tfidf-vectorizer.pkl')
         print("Loading existing model")
     except:
         print("Generating new model")
