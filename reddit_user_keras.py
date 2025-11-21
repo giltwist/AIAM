@@ -53,7 +53,7 @@ class RU_KERAS:
         model.add(Dense(32, activation='relu'))
         model.add(Dense(2, activation='softmax'))
 
-        model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+        model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['f1_score'])
 
         #print(y_train.head())
         history = model.fit(X_train, to_categorical(y_train), epochs=4)
